@@ -1,0 +1,54 @@
+replicaCount: 1
+
+image:
+  repository: myacr.azurecr.io/payments-api
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  className: nginx
+  host: payments-api.internal.example.com
+  tls:
+    enabled: true
+    secretName: payments-api-tls
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi
+
+# Key Vault secrets to mount
+secrets:
+  - name: DB_PASSWORD
+    key: payments-db-password
+  - name: API_KEY
+    key: payments-api-key
+
+workloadIdentity:
+  clientId: "REPLACE_WITH_TF_OUTPUT"
+
+networkPolicy:
+  enabled: true
+  allowedIngressNamespaces:
+    - ingress-nginx
+  allowedEgressPorts:
+    - 53/UDP
+    - 53/TCP
+
+hpa:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+labels:
+  team: payments
+  environment: development   

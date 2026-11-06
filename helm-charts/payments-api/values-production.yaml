@@ -1,0 +1,25 @@
+replicaCount: 3
+
+image:
+  repository: myacr.azurecr.io/payments-api
+  tag: "1.2.0"
+
+ingress:
+  host: payments-api.example.com
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 512Mi
+  limits:
+    cpu: "2"
+    memory: 1Gi
+
+hpa:
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+
+labels:
+  team: payments
+  environment: production   

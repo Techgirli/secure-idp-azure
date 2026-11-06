@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: production
+  namespace: argocd
+spec:
+  sourceRepos:
+    - 'https://github.com/yourorg/gitops-repo.git'
+  destinations:
+    - namespace: production
+      server: 'https://kubernetes.default.svc'
+  clusterResourceWhitelist:
+    - group: ''
+      kind: '*'
+  namespaceResourceWhitelist:
+    - group: 'apps'
+      kind: 'Deployment'
+    - group: ''
+      kind: 'Service'
+    - group: ''
+      kind: 'ConfigMap'
+    - group: 'networking.k8s.io'
+      kind: 'Ingress'
+    - group: 'networking.k8s.io'
+      kind: 'NetworkPolicy'
+    - group: 'autoscaling'
+      kind: 'HorizontalPodAutoscaler'
+    - group: 'secrets-store.csi.x-k8s.io'
+      kind: 'SecretProviderClass'
+  # Production requires manual sync
+  syncWindows:
+    - kind: allow
+      schedule: '0 9-17 * * 1-5'
+      duration: '8h'
+      namespaces:
+        - production   
