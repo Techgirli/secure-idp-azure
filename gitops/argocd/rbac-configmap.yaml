@@ -1,0 +1,14 @@
+# ConfigMap in argocd namespace
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+  namespace: argocd
+data:
+  policy.default: "role:readonly"
+  policy: |
+    p, role:admin, applications, *, */*, allow
+    p, role:developer, applications, create, */staging/*, allow
+    p, role:developer, applications, sync, */staging/*, allow
+    g, your-azure-ad-user, role:developer
+    g, your-azure-ad-user, role:admin   

@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Application",
+  "type": "object",
+  "required": ["application"],
+  "properties": {
+    "application": {
+      "type": "object",
+      "required": ["name", "image", "replicas", "environment"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{2,62}$"
+        },
+        "image": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+\\.azurecr\\.io/[a-z0-9-]+:[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "replicas": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "environment": {
+          "type": "string",
+          "enum": ["staging", "production"]
+        },
+        "ports": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["containerPort"],
+            "properties": {
+              "containerPort": { "type": "integer", "minimum": 1024, "maximum": 65535 }
+            }
+          }
+        },
+        "secrets": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "source", "key"],
+            "properties": {
+              "name": { "type": "string" },
+              "source": { "type": "string", "enum": ["keyvault"] },
+              "key": { "type": "string" }
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "properties": {
+            "requests": {
+              "type": "object",
+              "properties": {
+                "cpu": { "type": "string" },
+                "memory": { "type": "string" }
+              }
+            },
+            "limits": {
+              "type": "object",
+              "properties": {
+                "cpu": { "type": "string" },
+                "memory": { "type": "string" }
+              }
+            }
+          }
+        },
+        "hpa": {
+          "type": "object",
+          "properties": {
+            "minReplicas": { "type": "integer", "minimum": 1 },
+            "maxReplicas": { "type": "integer", "minimum": 1 },
+            "targetCPU": { "type": "integer", "minimum": 10, "maximum": 100 }
+          }
+        }
+      }
+    }
+  }
+}   

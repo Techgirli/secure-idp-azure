@@ -1,0 +1,19 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSP
+metadata:
+  name: restricted-security
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  message: "Pods must not run as privileged, must not escalate privileges, and must drop all capabilities"
+  parameters:
+    privileged: false
+    allowPrivilegeEscalation: false
+    requiredDropCapabilities:
+      - ALL
+    runAsUser:
+      rule: MustRunAsNonRoot
+    seccompProfile:
+      type: RuntimeDefault   

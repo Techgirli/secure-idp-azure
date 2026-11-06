@@ -1,0 +1,60 @@
+{{- if .Values.networkPolicy.enabled }}
+# Default deny-all
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "payments-api.fullname" . }}-default-deny
+  labels:
+    {{- include "payments-api.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "payments-api.selectorLabels" . | nindent 6 }}
+  policyTypes:
+    - Ingress
+    - Egress
+---
+# Allow ingress from ingress-nginx namespace
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "payments-api.fullname" . }}-allow-ingress
+  labels:
+    {{- include "payments-api.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "payments-api.selectorLabels" . | nindent 6 }}
+  policyTypes:
+    - Ingress
+  ingress:
+    {{- range .Values.networkPolicy.allowedIngressNamespaces }}
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: {{ . }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.service.port }}
+    {{- end }}
+---
+# Allow egress: DNS only
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "payments-api.fullname" . }}-allow-egress
+  labels:
+    {{- include "payments-api.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "payments-api.selectorLabels" . | nindent 6 }}
+  policyTypes:
+    - Egress
+  egress:
+    - ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+{{- end }}   

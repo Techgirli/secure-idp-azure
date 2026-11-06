@@ -1,0 +1,15 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sContainerImages
+metadata:
+  name: disallow-latest-tag
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  message: "Using 'latest' tag is forbidden. Pin to a specific version."
+  parameters:
+    allowed:
+      - image: "*.azurecr.io/*"
+        tags:
+          - "^[0-9]+\.[0-9]+\.[0-9]+$"   

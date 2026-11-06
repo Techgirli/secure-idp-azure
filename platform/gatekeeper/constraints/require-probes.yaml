@@ -1,0 +1,14 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredProbes
+metadata:
+  name: require-liveness-and-readiness
+spec:
+  match:
+    kinds:
+      - apiGroups: ["apps"]
+        kinds: ["Deployment"]
+  message: "All Deployments must define livenessProbe and readinessProbe"
+  parameters:
+    probes:
+      - liveness
+      - readiness   

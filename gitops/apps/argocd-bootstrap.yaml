@@ -1,0 +1,22 @@
+# gitops/apps/argocd-bootstrap.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/yourorg/gitops-repo.git'
+    path: 'gitops/apps'
+    targetRevision: 'HEAD'
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  info:
+    title: ArgoCD App of Apps
+    description: Bootstraps all applications from the GitOps repo   
