@@ -12,12 +12,12 @@ terraform {
     }
   }
 
-  backend "azurerm" {
+  #backend "azurerm" {
     resource_group_name  = "idp-tfstate-rg"
     storage_account_name = "idptfstate001"
     container_name       = "tfstate"
     key                  = "secure-idp.tfstate"
-  }
+  }#
 }
 
 provider "azurerm" {
