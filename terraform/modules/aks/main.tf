@@ -18,11 +18,14 @@ resource "azurerm_kubernetes_cluster" "aks" {
   oidc_issuer_enabled       = true
   workload_identity_enabled = true
 
-  network_profile {
+    network_profile {
     network_plugin      = "azure"
     network_plugin_mode = "overlay"
     network_policy      = "calico"
-  }
+    service_cidr        = "10.1.0.0/16"
+    pod_cidr            = "10.2.0.0/16"
+    dns_service_ip      = "10.1.0.10"
+  }   
 
   default_node_pool {
     name           = "system"

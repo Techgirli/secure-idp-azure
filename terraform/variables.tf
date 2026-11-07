@@ -49,11 +49,11 @@ variable "node_count" {
 variable "node_vm_size" {
   description = "VM size for nodes (B2s_v2 is free for 12 months)"
   type        = string
-  default     = "Standard_B2s_v2"
+  default     = "Standard_D2_v4"
 }
 
 variable "kubernetes_version" {
   description = "Kubernetes version"
   type        = string
-  default     = "1.30"
+  default     = "1.34"
 }   
