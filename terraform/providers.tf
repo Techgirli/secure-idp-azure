@@ -10,9 +10,5 @@ terraform {
 }
 
 provider "azurerm" {
-  features {
-    key_vault {
-      purge_protection_enabled = false
-    }
-  }
+  features {}
 }

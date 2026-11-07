@@ -63,7 +63,6 @@ module "workload_identity" {
   prefix                  = var.prefix
   aks_oidc_issuer_url     = module.aks.oidc_issuer_url
   key_vault_id            = module.key_vault.key_vault_id
-  tenant_id               = data.azurerm_client_config.current.tenant_id
 }
 
 # Data sources
