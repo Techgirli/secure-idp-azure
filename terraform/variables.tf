@@ -55,5 +55,5 @@ variable "node_vm_size" {
 variable "kubernetes_version" {
   description = "Kubernetes version"
   type        = string
-  default     = "1.31"
+  default     = "1.30"
 }   

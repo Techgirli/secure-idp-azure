@@ -4,7 +4,7 @@ variable "prefix"              { type = string }
 variable "tenant_id"           { type = string }
 
 resource "azurerm_key_vault" "main" {
-  name                     = "${var.prefix}-kv"
+  name                     = "idp-kv-a7x3f2"
   location                 = var.location
   resource_group_name      = var.resource_group_name
   tenant_id                = var.tenant_id
