@@ -6,18 +6,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 4.0"
     }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = "~> 3.0"
-    }
   }
-
-  #backend "azurerm" {
-    resource_group_name  = "idp-tfstate-rg"
-    storage_account_name = "idptfstate001"
-    container_name       = "tfstate"
-    key                  = "secure-idp.tfstate"
-  }#
 }
 
 provider "azurerm" {
@@ -27,5 +16,3 @@ provider "azurerm" {
     }
   }
 }
-
-provider "azuread" {}   
