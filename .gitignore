@@ -1,4 +1,51 @@
-terraform/.terraform/
-terraform/.terraform.lock.hcl
+# Terraform
+.terraform/
 *.tfstate
 *.tfstate.backup
+*.tfstate.*
+crash.log
+*.tfvars
+*.tfvars.json
+!example.tfvars
+!example.tfvars.json
+.terraform.lock.hcl
+
+# Kubernetes / kubeconfig
+kubeconfig
+*.kubeconfig
+.kube/
+
+# Helm
+charts/
+*.tgz
+
+# Secrets & credentials
+*.pem
+*.key
+secrets/
+*.env
+.env*
+!example.env
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Build artifacts
+bin/
+dist/
+*.log
+
+# Trivy
+.trivycache/
+
+# Docker
+docker-compose.override.yml
