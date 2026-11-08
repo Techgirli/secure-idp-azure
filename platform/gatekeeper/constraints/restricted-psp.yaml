@@ -1,19 +1,42 @@
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sPSP
+kind: K8sPSPPrivilegedContainer
 metadata:
-  name: restricted-security
+  name: disallow-privileged
 spec:
   match:
     kinds:
       - apiGroups: [""]
         kinds: ["Pod"]
-  message: "Pods must not run as privileged, must not escalate privileges, and must drop all capabilities"
+    excludedNamespaces:
+      - kube-system
+      - argocd
+      - gatekeeper-system
+      - ingress-nginx
+      - calico-system
+      - cert-manager
+      - tigera-operator
   parameters:
-    privileged: false
-    allowPrivilegeEscalation: false
+    exemptImages: []
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sPSPCapabilities
+metadata:
+  name: drop-all-capabilities
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+    excludedNamespaces:
+      - kube-system
+      - argocd
+      - gatekeeper-system
+      - ingress-nginx
+      - calico-system
+      - cert-manager
+      - tigera-operator
+  parameters:
     requiredDropCapabilities:
       - ALL
-    runAsUser:
-      rule: MustRunAsNonRoot
-    seccompProfile:
-      type: RuntimeDefault   
+    allowedCapabilities: []
+    exemptImages: []

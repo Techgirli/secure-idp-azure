@@ -7,11 +7,20 @@ spec:
     kinds:
       - apiGroups: [""]
         kinds: ["Pod"]
-  message: "All containers must define resource requests and limits"
+    excludedNamespaces:
+      - kube-system
+      - argocd
+      - gatekeeper-system
+      - ingress-nginx
+      - calico-system
+      - cert-manager
+      - tigera-operator
+      - kube-public
+      - kube-node-lease
   parameters:
-    cpu:
-      min: "100m"
-      max: "4"
-    memory:
-      min: "128Mi"
-      max: "4Gi"   
+    limits:
+      - cpu
+      - memory
+    requests:
+      - cpu
+      - memory

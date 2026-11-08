@@ -1,15 +1,21 @@
 apiVersion: constraints.gatekeeper.sh/v1beta1
-kind: K8sContainerImages
+kind: K8sImageDigests
 metadata:
-  name: disallow-latest-tag
+  name: require-image-digest
 spec:
   match:
     kinds:
       - apiGroups: [""]
         kinds: ["Pod"]
-  message: "Using 'latest' tag is forbidden. Pin to a specific version."
+    excludedNamespaces:
+      - kube-system
+      - argocd
+      - gatekeeper-system
+      - ingress-nginx
+      - calico-system
+      - cert-manager
+      - tigera-operator
   parameters:
-    allowed:
-      - image: "*.azurecr.io/*"
-        tags:
-          - "^[0-9]+\.[0-9]+\.[0-9]+$"   
+    exemptImages:
+      - "k8s.gcr.io/pause:*"
+      - "registry.k8s.io/pause:*"

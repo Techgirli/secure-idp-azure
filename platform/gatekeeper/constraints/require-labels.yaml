@@ -7,8 +7,7 @@ spec:
     kinds:
       - apiGroups: ["apps"]
         kinds: ["Deployment"]
-  message: "All Deployments must have 'team' and 'environment' labels"
   parameters:
     labels:
-      - key: "team"
-      - key: "environment"   
+      - key: team
+      - key: environment

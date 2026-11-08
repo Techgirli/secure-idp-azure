@@ -7,8 +7,7 @@ spec:
     kinds:
       - apiGroups: ["apps"]
         kinds: ["Deployment"]
-  message: "All Deployments must define livenessProbe and readinessProbe"
   parameters:
     probes:
       - liveness
-      - readiness   
+      - readiness

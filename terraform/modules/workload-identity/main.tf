@@ -20,10 +20,10 @@ resource "azurerm_federated_identity_credential" "vault" {
 }
 
 resource "azurerm_role_assignment" "vault_data_reader" {
-  scope              = var.key_vault_id
-  role_definition_id = "4633458b-17de-408e-8455-ee48ea9f502b"
-  principal_id       = azurerm_user_assigned_identity.vault_reader.principal_id
-}
+  scope                = var.key_vault_id
+  role_definition_name = "Key Vault Secrets User"
+  principal_id         = azurerm_user_assigned_identity.vault_reader.principal_id
+}   
 
 output "client_id"               { value = azurerm_user_assigned_identity.vault_reader.client_id }
 output "principal_id"            { value = azurerm_user_assigned_identity.vault_reader.principal_id }
