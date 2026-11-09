@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argocd
+  name: gitops-root
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: 'https://github.com/Techgirli/secure-idp-azure.git'
-    path: 'gitops/apps'
-    targetRevision: 'main'
+    repoURL: https://github.com/Techgirli/secure-idp-azure.git
+    path: gitops
+    targetRevision: main
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
     namespace: argocd
   syncPolicy:
     automated:

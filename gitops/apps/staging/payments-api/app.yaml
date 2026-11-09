@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: payments-api-staging
+  namespace: argocd
+spec:
+  project: staging
+  source:
+    repoURL: https://github.com/Techgirli/secure-idp-azure.git
+    path: helm-charts/payments-api
+    targetRevision: main
+    helm:
+      releaseName: payments-api
+      valueFiles:
+        - values-staging.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: staging

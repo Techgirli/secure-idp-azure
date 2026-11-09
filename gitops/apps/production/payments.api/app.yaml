@@ -1,30 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: payments-api
+  name: payments-api-production
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: production
   source:
-    repoURL: 'https://github.com/yourorg/gitops-repo.git'
-    path: 'helm-charts/payments-api'
-    targetRevision: 'HEAD'
+    repoURL: https://github.com/Techgirli/secure-idp-azure.git
+    path: helm-charts/payments-api
+    targetRevision: main
     helm:
+      releaseName: payments-api
       valueFiles:
-        - 'values-production.yaml'
+        - values-production.yaml
   destination:
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
     namespace: production
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-    retry:
-      limit: 3
-      backoff:
-        duration: 5s
-        factor: 2   
