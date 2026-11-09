@@ -49,3 +49,5 @@ dist/
 
 # Docker
 docker-compose.override.yml
+# Terraform plan files\ n*.tfplan
+*.plan
