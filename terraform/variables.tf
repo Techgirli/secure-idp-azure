@@ -25,19 +25,19 @@ variable "admin_username" {
 variable "vnet_cidr" {
   description = "VNet CIDR"
   type        = string
-  default     = "10.0.0.0/16"
+  default     = "172.16.0.0/16"
 }
 
 variable "node_subnet_cidr" {
   description = "Node subnet CIDR"
   type        = string
-  default     = "10.0.1.0/24"
+  default     = "172.16.1.0/24"
 }
 
 variable "system_subnet_cidr" {
   description = "System subnet CIDR"
   type        = string
-  default     = "10.0.0.0/24"
+  default     = "172.16.0.0/24"
 }
 
 variable "node_count" {
@@ -56,4 +56,4 @@ variable "kubernetes_version" {
   description = "Kubernetes version"
   type        = string
   default     = "1.34"
-}   
+}

@@ -44,6 +44,12 @@ module "acr" {
   prefix              = var.prefix
 }
 
+resource "azurerm_role_assignment" "aks_acr_pull" {
+  scope                = module.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = module.aks.kubelet_identity_object_id
+}
+
 # Key Vault
 module "key_vault" {
   source = "./modules/key-vault"
@@ -53,18 +59,18 @@ module "key_vault" {
   prefix              = var.prefix
   tenant_id           = data.azurerm_client_config.current.tenant_id
   user_object_id      = data.azurerm_client_config.current.object_id
-}   
+}
 
 # Workload Identity
 module "workload_identity" {
   source = "./modules/workload-identity"
 
-  resource_group_name     = azurerm_resource_group.main.name
-  location                = var.location
-  prefix                  = var.prefix
-  aks_oidc_issuer_url     = module.aks.oidc_issuer_url
-  key_vault_id            = module.key_vault.key_vault_id
+  resource_group_name = azurerm_resource_group.main.name
+  location            = var.location
+  prefix              = var.prefix
+  aks_oidc_issuer_url = module.aks.oidc_issuer_url
+  key_vault_id        = module.key_vault.key_vault_id
 }
 
 # Data sources
-data "azurerm_client_config" "current" {}   
+data "azurerm_client_config" "current" {}

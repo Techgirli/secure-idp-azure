@@ -1,9 +1,9 @@
 variable "resource_group_name" { type = string }
-variable "location"            { type = string }
-variable "prefix"              { type = string }
-variable "vnet_cidr"           { type = string }
-variable "node_subnet_cidr"    { type = string }
-variable "system_subnet_cidr"  { type = string }
+variable "location" { type = string }
+variable "prefix" { type = string }
+variable "vnet_cidr" { type = string }
+variable "node_subnet_cidr" { type = string }
+variable "system_subnet_cidr" { type = string }
 
 resource "azurerm_virtual_network" "main" {
   name                = "${var.prefix}-vnet"
@@ -57,6 +57,42 @@ resource "azurerm_network_security_group" "node" {
   }
 
   security_rule {
+    name                       = "Allow-Node-To-Node"
+    priority                   = 200
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "172.16.1.0/24"
+    destination_address_prefix = "172.16.1.0/24"
+  }
+
+  security_rule {
+    name                       = "Allow-Node-To-Pod"
+    priority                   = 210
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "172.16.1.0/24"
+    destination_address_prefix = "172.18.0.0/16"
+  }
+
+  security_rule {
+    name                       = "Allow-Pod-To-Pod"
+    priority                   = 220
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "172.18.0.0/16"
+    destination_address_prefix = "172.18.0.0/16"
+  }
+
+  security_rule {
     name                       = "Deny-All-Inbound"
     priority                   = 4096
     direction                  = "Inbound"
@@ -74,5 +110,5 @@ resource "azurerm_subnet_network_security_group_association" "node" {
   network_security_group_id = azurerm_network_security_group.node.id
 }
 
-output "vnet_id"         { value = azurerm_virtual_network.main.id }
-output "node_subnet_id"  { value = azurerm_subnet.node.id }   
+output "vnet_id" { value = azurerm_virtual_network.main.id }
+output "node_subnet_id" { value = azurerm_subnet.node.id }
